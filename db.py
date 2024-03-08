@@ -6,6 +6,7 @@ class Task(Model):
     id = AutoField(primary_key=True)
     name = CharField()
     execution_time = DateTimeField()
+    status = CharField(default='pending')
 
     class Meta:
         database = db

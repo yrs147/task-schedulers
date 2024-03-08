@@ -12,7 +12,7 @@ api = Api(app)
 class TaskResource(Resource):
     def get(self):
         tasks = read_all_tasks()
-        return jsonify([{'id': task.id, 'name': task.name, 'execution_time': task.execution_time.strftime('%Y-%m-%d %H:%M:%S')} for task in tasks])
+        return jsonify([{'id': task.id, 'name': task.name, 'execution_time': task.execution_time.strftime('%Y-%m-%d %H:%M:%S'), 'status': task.status} for task in tasks])
 
     def post(self):
         data = request.get_json()
@@ -20,7 +20,7 @@ class TaskResource(Resource):
         execution_time = data.get('execution_time')
         id = data.get('id')
         task = create_task(id,name,execution_time)
-        return {'id': task.id, 'name': task.name, 'execution_time': task.execution_time.strftime('%Y-%m-%d %H:%M:%S')}, 201
+        return {'id': task.id, 'name': task.name, 'execution_time': task.execution_time.strftime('%Y-%m-%d %H:%M:%S'), 'status': task.status}, 201
 
     def put(self,task_id):
         data = request.get_json()    
@@ -44,5 +44,5 @@ if __name__ == '__main__':
     db.create_tables([Task], safe=True)
     threading.Thread(target=task_scheduler).start()
 
-    app.run(debug=True)
+    app.run(debug=False)
 
