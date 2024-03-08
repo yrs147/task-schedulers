@@ -1,4 +1,4 @@
-from task_scheduler.db import Task
+from db import Task
 
 def create_task(id, name, execution_time):
     return Task.create(id=id,name=name, execution_time=execution_time)

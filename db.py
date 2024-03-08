@@ -11,4 +11,10 @@ class Task(Model):
         database = db
 
 db.connect()
+
+
 db.create_tables([Task])
+
+sample_task = Task.create(name='Sample Task', execution_time='2024-03-07 12:00:00')
+
+db.close()

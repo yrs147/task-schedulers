@@ -1,8 +1,7 @@
-import threading
 import time
 import random
 from datetime import datetime, timedelta
-from task_scheduler.db import Task
+from db import Task
 import schedule
 
 def execute_task(task_id,task_name):
@@ -19,6 +18,7 @@ def task_scheduler():
  
 
 def schedule_tasks():
+    schedule.every(1).seconds.do(task_scheduler)
     while True:
         schedule.run_pending()  
         time.sleep(1)     
