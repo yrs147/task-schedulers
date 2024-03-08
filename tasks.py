@@ -1,6 +1,8 @@
 from db import Task
+from datetime import datetime
 
 def create_task(id, name, execution_time):
+    execution_time = datetime.strptime(execution_time, '%Y-%m-%d %H:%M:%S')
     return Task.create(id=id,name=name, execution_time=execution_time)
 
 def read_all_tasks():
