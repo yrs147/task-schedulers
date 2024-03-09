@@ -21,8 +21,7 @@ def execute_task(task):
     if task.cron_schedule:
 
         task.execution_time = calculate_next_execution_time(task.cron_schedule)
-        task.run_count = (task.run_count or 0) + 1
-        task.status = f'pending({task.run_count})'
+        task.status = 'pending'
         with db.atomic():
             task.save()
 
@@ -37,27 +36,19 @@ def execute_task(task):
 
 
 def task_scheduler():
-    while True:    
+    while True:
         current_time = datetime.now()
-        tasks_to_execute = Task.select().where(Task.execution_time >= current_time)
-        # print(f'Tasks to Execute: {[task.id for task in tasks_to_execute]}')
+        tasks_to_execute = Task.select().where(Task.execution_time <= current_time, Task.status == 'pending')
 
         threads = []
 
         for task in tasks_to_execute:
-            time_until_execution = (task.execution_time - current_time).total_seconds()
-
-            if time_until_execution > 0:
-                print(f"Waiting for {time_until_execution} seconds until the next task execution.")
-                time.sleep(time_until_execution)
-
             thread = threading.Thread(target=execute_task, args=(task,))
             thread.start()
             threads.append(thread)
 
-    
         for thread in threads:
             thread.join()
 
-        
         time.sleep(1)
+
