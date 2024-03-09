@@ -7,6 +7,8 @@ class Task(Model):
     name = CharField()
     execution_time = DateTimeField()
     status = CharField(default='pending')
+    cron_schedule = CharField(null=True)
+    recurring = CharField(default='no')
 
     class Meta:
         database = db

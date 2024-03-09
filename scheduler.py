@@ -1,10 +1,9 @@
 import time
 import random
-from datetime import datetime, timedelta
+from datetime import datetime
 from db import Task, db
-import schedule
 import threading
-
+from tasks import calculate_next_execution_time
 
 
 def execute_task(task):
@@ -19,10 +18,22 @@ def execute_task(task):
     time.sleep(random.randint(1, 6))
     print(f"Task {task_id}: {task_name} completed")
 
-    with db.atomic():
-        task = Task.get_by_id(task.id)  
-        task.status = 'completed'
-        task.save()
+    if task.cron_schedule:
+
+        task.execution_time = calculate_next_execution_time(task.cron_schedule)
+        task.run_count = (task.run_count or 0) + 1
+        task.status = f'pending({task.run_count})'
+        with db.atomic():
+            task.save()
+
+        print(f"Next occurrence scheduled at {task.execution_time}")
+
+    else:
+        with db.atomic():
+            task = Task.get_by_id(task.id)  
+            task.status = 'completed'
+            task.save()
+
 
 
 def task_scheduler():
