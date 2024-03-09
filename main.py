@@ -1,51 +1,20 @@
-# main.py
 from db import db, Task
 from tasks import create_task, read_all_tasks, update_task, delete_task
 from scheduler import task_scheduler
-from flask import Flask, request, jsonify
-from flask_restful import Api, Resource
+from api import app
 from prettytable import PrettyTable
 
 import threading
 import argparse
 
-app = Flask(__name__)
-api = Api(app)
+def tabulate_tasks(tasks):
+    table = PrettyTable()
+    table.field_names = ["Sno", "ID", "Name", "Execution Time", "Status"]
 
-class TaskResource(Resource):
-    def get(self):
-        tasks = read_all_tasks()
-        return self.tabulate_tasks(tasks)
+    for sno, task in enumerate(tasks, start=1):
+        table.add_row([sno, task.id, task.name, task.execution_time.strftime('%Y-%m-%d %H:%M:%S'), task.status])
 
-    def post(self):
-        data = request.get_json()
-        name = data.get('name')
-        execution_time = data.get('execution_time')
-        id = data.get('id')
-        task = create_task(id, name, execution_time)
-        return {'id': task.id, 'name': task.name, 'execution_time': task.execution_time.strftime('%Y-%m-%d %H:%M:%S'), 'status': task.status}, 201
-
-    def put(self, task_id):
-        data = request.get_json()
-        name = data.get('name')
-        update_task(task_id, name)
-        return {'message': f'Task {task_id} updated successfully'}
-
-    def delete(self, task_id):
-        delete_task(task_id)
-        return {'message': f'Task {task_id} deleted successfully'}
-    
-    def tabulate_tasks(self, tasks):
-        table = PrettyTable()
-        table.field_names = ["Sno", "ID", "Name", "Execution Time", "Status"]
-
-        for sno, task in enumerate(tasks, start=1):
-            table.add_row([sno, task.id, task.name, task.execution_time.strftime('%Y-%m-%d %H:%M:%S'), task.status])
-
-        return table.get_string()
-
-
-api.add_resource(TaskResource, '/tasks', '/tasks/<int:task_id>')
+    return table.get_string()
 
 def main():
     parser = argparse.ArgumentParser(description='Task Management Application')
@@ -70,12 +39,12 @@ def main():
         app.run(debug=False)
     elif args.command == 'view':
         tasks = read_all_tasks()
-        print(TaskResource().tabulate_tasks(tasks))
+        print(tabulate_tasks(tasks))
     elif args.command == 'create':
         create_task(args.id, args.name, args.execution_time)
         print('Task created successfully.')
     elif args.command == 'update':
-        update_task(args.id, args.name)
+        update_task(args.id, args.name, args.execution_time)
         print(f'Task {args.id} updated successfully.')
     elif args.command == 'delete':
         delete_task(args.id)

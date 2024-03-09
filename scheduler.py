@@ -5,14 +5,14 @@ from db import Task, db
 import schedule
 import threading
 
-# ...
+
 
 def execute_task(task):
     task_id, task_name = task.id, task.name
     print(f"Executing Task {task_id}: {task_name}")
 
     with db.atomic():
-        task = Task.get_by_id(task.id)  # Reload the task in the current transaction
+        task = Task.get_by_id(task.id)  
         task.status = 'running'
         task.save()
 
@@ -20,17 +20,16 @@ def execute_task(task):
     print(f"Task {task_id}: {task_name} completed")
 
     with db.atomic():
-        task = Task.get_by_id(task.id)  # Reload the task in the current transaction
+        task = Task.get_by_id(task.id)  
         task.status = 'completed'
         task.save()
 
-# ...
 
 def task_scheduler():
     while True:    
         current_time = datetime.now()
         tasks_to_execute = Task.select().where(Task.execution_time >= current_time)
-        print(f'Tasks to Execute: {[task.id for task in tasks_to_execute]}')
+        # print(f'Tasks to Execute: {[task.id for task in tasks_to_execute]}')
 
         threads = []
 
@@ -45,9 +44,9 @@ def task_scheduler():
             thread.start()
             threads.append(thread)
 
-        # Wait for all threads to finish before moving on
+    
         for thread in threads:
             thread.join()
 
-        # Sleep for 1 second before checking for new tasks
+        
         time.sleep(1)
