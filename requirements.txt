@@ -1,0 +1,7 @@
+flask==2.2.2
+Flask-RESTful==0.3.10
+peewee==3.17.1
+prettytable==3.10.0
+crontab==1.0.1
+PyMySQL==1.1.0
+Werkzeug==2.2.2

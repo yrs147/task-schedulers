@@ -1,2 +1,3 @@
 venv
-docker run -d --name my-mysql-container -e MYSQL_ROOT_PASSWORD=test -e MYSQL_DATABASE=mydb -p 3306:3306 mysql:latest
+__pycache__/
+sample.txt
