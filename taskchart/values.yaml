@@ -1,0 +1,13 @@
+flaskAppService:
+  ports:
+  - port: 5000
+    protocol: TCP
+    targetPort: 5000
+  type: ClusterIP
+kubernetesClusterDomain: cluster.local
+mysqlService:
+  ports:
+  - port: 3306
+    protocol: TCP
+    targetPort: 3306
+  type: ClusterIP

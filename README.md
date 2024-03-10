@@ -4,3 +4,9 @@
  ```
  docker run -d --name my-mysql-container -e MYSQL_ROOT_PASSWORD=test -e MYSQL_DATABASE=mydb -p 3306:3306 mysql:latest
  ```
+
+2) Port forward application 
+
+```
+kubectl port-forward pod/flask-app-pod 5000:5000
+```

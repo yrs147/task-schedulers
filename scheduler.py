@@ -8,15 +8,15 @@ from tasks import calculate_next_execution_time
 
 def execute_task(task):
     task_id, task_name = task.id, task.name
-    print(f"Executing Task {task_id}: {task_name}")
+    print(f"Executing Task {task_id}: {task_name}", flush=True)
 
     with db.atomic():
         task = Task.get_by_id(task.id)  
         task.status = 'running'
         task.save()
 
-    time.sleep(random.randint(1, 6))
-    print(f"Task {task_id}: {task_name} completed")
+    time.sleep(random.randint(1, 10))
+    print(f"Task {task_id}: {task_name} completed", flush=True)
 
     if task.cron_schedule:
 
@@ -25,7 +25,7 @@ def execute_task(task):
         with db.atomic():
             task.save()
 
-        print(f"Next occurrence scheduled at {task.execution_time}")
+        print(f"Next occurrence scheduled at {task.execution_time}", flush=True)
 
     else:
         with db.atomic():

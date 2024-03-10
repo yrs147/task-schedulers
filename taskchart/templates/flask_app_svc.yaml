@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "taskchart.fullname" . }}-flask-app-service
+  labels:
+  {{- include "taskchart.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.flaskAppService.type }}
+  selector:
+    app: flask-app
+  {{- include "taskchart.selectorLabels" . | nindent 4 }}
+  ports:
+	{{- .Values.flaskAppService.ports | toYaml | nindent 2 }}

@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ include "taskchart.fullname" . }}-flask-app-pod
+  labels:
+    app: flask-app
+  {{- include "taskchart.labels" . | nindent 4 }}
+spec:
+  initContainers:
+  - name: init-mysql-wait
+    image: busybox
+    command: ['sh', '-c', 'until nc -z mysql-service 3306; do echo "Waiting for MySQL..."; sleep 2; done;']
+  containers:
+  - command:
+    - python
+    - ./main.py
+    - run
+    image: yrs9480/testapp:latest
+    name: flask-app
+    ports:
+    - containerPort: 5000
