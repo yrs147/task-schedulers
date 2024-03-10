@@ -19,6 +19,12 @@ def update_task(task_id, name, execution_time, cron_schedule):
     with db.atomic():
         task = Task.get_by_id(task_id)
 
+        if task.recurring == 'yes' and execution_time is not None:
+            raise ValueError("Cannot change a recurring task to non-recurring")
+        
+        if task.recurring == 'no' and cron_schedule is not None:
+            raise ValueError("Cannot change a non-recurring task to recurring or vice versa.")
+
         if cron_schedule is not None:
             task.cron_schedule = cron_schedule
             task.execution_time = calculate_next_execution_time(cron_schedule)
