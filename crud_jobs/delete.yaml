@@ -1,0 +1,13 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: delete-task-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: delete-task
+        image: yrs9480/testapp:latest
+        command: ["python", "./main.py", "delete", "--id=99"]
+      restartPolicy: Never
+  backoffLimit: 4

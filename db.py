@@ -1,6 +1,6 @@
 from peewee import Model,AutoField, CharField, DateTimeField, MySQLDatabase
 
-db = MySQLDatabase('mydb', user='root', password='test', host='localhost', port=3306)
+db = MySQLDatabase('mydb', user='root', password='test', host='mysql-service', port=3306)
 
 class Task(Model):
     id = AutoField(primary_key=True)
