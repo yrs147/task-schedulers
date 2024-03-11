@@ -15,15 +15,15 @@ The Task Scheduler Project is a powerful task scheduling system designed to perf
 
 - **Command Line Interface (CLI):** Interact with the scheduler through a command-line interface, enabling users to create, update, read, and delete tasks.
 
-  - **Parallel Task Execution:** Supports parallel execution of tasks, allowing for efficient and concurrent processing.
+- **Parallel Task Execution:** Supports parallel execution of tasks, allowing for efficient and concurrent processing.
 
-  - **Recurring Task Support:** - Users can schedule recurring tasks using cron format via the API, CLI, or Kubernetes Jobs.
+- **Recurring Task Support:** - Users can schedule recurring tasks using cron format via the API, CLI, or Kubernetes Jobs.
 
-  - **Kubernetes Deployment:** - Easily deploy the scheduler and MySQL database using Helm Charts, simplifying the deployment process.
+- **Kubernetes Deployment:** - Easily deploy the scheduler and MySQL database using Helm Charts, simplifying the deployment process.
 
   
 
-## Getting Started
+## Installation
 
 ### Deploying with Helm Chart
 
@@ -32,7 +32,7 @@ The Task Scheduler Project is a powerful task scheduling system designed to perf
 
 ```bash
 
-git clone https://github.com/your/repository.git
+git clone https://github.com/yrs147/task-schedulers.git
 
 cd repository
 
@@ -49,6 +49,15 @@ helm install myrelease ./project-setup-chart
 ```
 # Database Schema
 
+
+| Field           | Type       | Constraints      |
+|-----------------|------------|------------------|
+| id              | integer    | primary key      |
+| name            | varchar    |                  |
+| execution_time  | datetime   |                  |
+| status          | varchar    |                  |
+| recurring       | varchar    |                  |
+| cron_schedule   | varchar    |                  |
   
 
 # Usage
@@ -56,41 +65,35 @@ helm install myrelease ./project-setup-chart
 ## API
 
   
+| Method | Route               | Description                      |
+|--------|---------------------|----------------------------------|
+| GET    | /api/tasks          | Get a list of tasks               |
+| GET    | /api/tasks/{taskId} | Get details of a specific task    |
+| POST   | /api/tasks          | Create a new task                 |
+| PUT    | /api/tasks/{taskId} | Update details of a specific task |
+| DELETE | /api/tasks/{taskId} | Delete a specific task            |
 
-| Method | Route | Description |
-
-|--------|---------------------|-----------------------------------|
-
-| GET | /api/tasks | Get a list of tasks |
-
-| GET | /api/tasks/{taskId} | Get a list of tasks |
-
-| POST | /api/tasks | Create a new task |
-
-| PUT | /api/tasks/{taskId} | Update details of a specific task |
-
-| DELETE | /api/tasks/{taskId} | Delete a specific task |
 
   
 
 1. Port forward the pod to make the api acessible on `localhost:5000`
 
 ```bash
-
-  
-
 kubectl port-forward myrelease-taskchart-scheduler 5000:5000
-
 ```
+
+2. Now from another terminal window make a request on the respective path
 
 
 ### Create a new task (`POST /api/tasks`)
+
+**Path** - `http://localhost:5000/tasks`
 
 **Request Body(For Recurring Tasks):**
 
 ```
 {   
-	"id": "1001"
+    "id": "1001"
     "name": "Task 1001",   
     "cron_schedule": "*/2 * * * *",   
 }
@@ -105,7 +108,7 @@ kubectl port-forward myrelease-taskchart-scheduler 5000:5000
 
 ```
 {   
-	"id": "1001"
+    "id": "1001"
     "name": "Task 1001",   
     "execution_time": "2024-03-11 00:06:00",   
 }
@@ -117,6 +120,8 @@ kubectl port-forward myrelease-taskchart-scheduler 5000:5000
 
 
 ### Update details of a  task (`PUT /api/tasks/{taskId}`)
+
+**Path** - `http://localhost:5000/tasks/{task_id}`
 
 **Request Body(Recurring Tasks):**
 
@@ -141,6 +146,7 @@ Can update both or either one
 ```
 
 ### GetById and Delete Does not require a request body , just append the task_id at the end of their respective path
+**Path** - `http://localhost:5000/tasks/{task_id}`
 
 
 ## CLI
@@ -158,10 +164,16 @@ kubectl exec myrelease-taskchart-scheduler -- python ./main.py create --name Tas
 ```
 
 
-### - Read Tasks:
+### - Get Tasks:
 
 ```
 kubectl exec myrelease-taskchart-scheduler -- python ./main.py view
+```
+
+### - Get a Specific Tasks by Id:
+
+```
+kubectl exec myrelease-taskchart-scheduler -- python ./main.py get --id="ID"
 ```
 
 
@@ -204,3 +216,9 @@ helm install create-non-recurring-task-release ./create-non-recurring  --set no
 ```
 helm install create-recurring-task-release ./create-recurring/ --set createTaskJob.id="ID" --set createTaskJob.name="TASK_NAME" --set createTaskJob.cronSchedule="* * * * *"
 ```
+## Cron Schedule Examples
+
+- Daily: `0 0 * * *`
+- Weekly: `0 0 * * 0`
+- Monthly: `0 0 1 * *`
+- Yearly: `0 0 1 1 *`
