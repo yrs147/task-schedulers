@@ -1,12 +1,19 @@
 from flask import Flask, request, jsonify
 from flask_restful import Api, Resource
-from tasks import create_task, read_all_tasks, update_task, delete_task
+from tasks import create_task, read_all_tasks, update_task, delete_task, get_task_by_id
 
 app = Flask(__name__)
 api = Api(app)
 
 class TaskResource(Resource):
     def get(self, task_id=None):
+        if task_id is not None:
+            task_data = get_task_by_id(task_id)
+            if task_data:
+                return jsonify(task_data)
+            else:
+                return jsonify({'message': f'Task with ID {task_id} not found'}), 404
+
         tasks = read_all_tasks()
         
         response_data = [

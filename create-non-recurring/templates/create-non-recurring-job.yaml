@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
       - name: non-recurring-task
-        image: yrs9480/testapp:latest
+        image: yrs9480/taskapp:latest
         command: ["python", "./main.py", "create", 
                    "--id={{ .Values.nonRecurringTaskJob.id }}", 
                    "--name={{ .Values.nonRecurringTaskJob.name }}", 

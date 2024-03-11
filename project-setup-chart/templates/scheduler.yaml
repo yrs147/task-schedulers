@@ -15,7 +15,7 @@ spec:
     - python
     - ./main.py
     - run
-    image: yrs9480/testapp:latest
+    image: yrs9480/taskapp:latest
     name: scheduler
     ports:
     - containerPort: 5000

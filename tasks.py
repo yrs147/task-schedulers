@@ -15,6 +15,18 @@ def read_all_tasks():
     with db.atomic():
         return Task.select()
 
+def get_task_by_id(task_id):
+    with db.atomic():
+        task = Task.get_by_id(task_id)
+        return {
+            'id': task.id,
+            'name': task.name,
+            'status': task.status,
+            'recurring': 'yes' if task.recurring else 'no',
+            'cron_schedule': task.cron_schedule,
+            'execution_time': task.execution_time.strftime('%Y-%m-%d %H:%M:%S')
+        }
+
 def update_task(task_id, name, execution_time, cron_schedule):
     with db.atomic():
         task = Task.get_by_id(task_id)

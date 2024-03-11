@@ -18,7 +18,7 @@ def tabulate_tasks(tasks):
 
 def main():
     parser = argparse.ArgumentParser(description='Task Management Application')
-    parser.add_argument('command', choices=['run', 'view', 'create', 'update', 'delete'], help='Command to execute')
+    parser.add_argument('command', choices=['run', 'view', 'create', 'update', 'delete', 'get'], help='Command to execute')
 
     parser.add_argument('--id', type=int, help='Task ID')
     parser.add_argument('--name', type=str, help='Task Name')
@@ -48,6 +48,15 @@ def main():
     elif args.command == 'delete':
         delete_task(args.id)
         print(f'Task {args.id} deleted successfully.')
+    elif args.command == 'get':
+        if args.id is not None:
+            task = Task.get_or_none(Task.id == args.id)
+            if task:
+                print(f'Task found:\n{tabulate_tasks([task])}')
+            else:
+                print(f'Task with ID {args.id} not found.')
+        else:
+            print('Please provide a task ID with the --id option for the "get" command.')    
 
 if __name__ == '__main__':
     main()

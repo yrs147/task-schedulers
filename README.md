@@ -47,6 +47,7 @@ cd repository
 helm install myrelease ./project-setup-chart
 
 ```
+# Database Schema
 
   
 
@@ -61,6 +62,8 @@ helm install myrelease ./project-setup-chart
 |--------|---------------------|-----------------------------------|
 
 | GET | /api/tasks | Get a list of tasks |
+
+| GET | /api/tasks/{taskId} | Get a list of tasks |
 
 | POST | /api/tasks | Create a new task |
 
@@ -136,6 +139,8 @@ Can update both or either one
     "cron_schedule": "* * * * *",   
 }
 ```
+
+### GetById and Delete Does not require a request body , just append the task_id at the end of their respective path
 
 
 ## CLI
