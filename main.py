@@ -9,10 +9,10 @@ import argparse
 
 def tabulate_tasks(tasks):
     table = PrettyTable()
-    table.field_names = ["Sno", "ID", "Name", "Execution Time", "Status", "Recurring"]
+    table.field_names = ["Sno", "ID", "Name", "Execution Time", "Status", "Recurring", "Cron Schedule"]
 
     for sno, task in enumerate(tasks, start=1):
-        table.add_row([sno, task.id, task.name, task.execution_time.strftime('%Y-%m-%d %H:%M:%S'), task.status, task.recurring])
+        table.add_row([sno, task.id, task.name, task.execution_time.strftime('%Y-%m-%d %H:%M:%S'), task.status, task.recurring, task.cron_schedule])
 
     return table.get_string()
 

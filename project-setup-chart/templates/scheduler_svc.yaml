@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "taskchart.fullname" . }}-scheduler-service
+  labels:
+  {{- include "taskchart.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.schedulerService.type }}
+  selector:
+    app: scheduler
+  {{- include "taskchart.selectorLabels" . | nindent 4 }}
+  ports:
+	{{- .Values.schedulerService.ports | toYaml | nindent 2 }}

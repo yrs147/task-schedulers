@@ -1,0 +1,4 @@
+createTaskJob:
+  id: 99
+  name: NewTask
+  cronSchedule: "*/2 * * * *"

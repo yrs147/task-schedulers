@@ -1,0 +1,4 @@
+nonRecurringTaskJob:
+  id: 99
+  name: NewTask
+  executionTime: "2024-03-11T12:00:00Z"

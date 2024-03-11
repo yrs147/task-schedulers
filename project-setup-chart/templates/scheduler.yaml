@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: {{ include "taskchart.fullname" . }}-flask-app-pod
+  name: {{ include "taskchart.fullname" . }}-scheduler
   labels:
-    app: flask-app
+    app: scheduler
   {{- include "taskchart.labels" . | nindent 4 }}
 spec:
   initContainers:
@@ -16,6 +16,6 @@ spec:
     - ./main.py
     - run
     image: yrs9480/testapp:latest
-    name: flask-app
+    name: scheduler
     ports:
     - containerPort: 5000
