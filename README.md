@@ -79,7 +79,7 @@ helm install myrelease ./project-setup-chart
 
   
 
-kubectl port-forward myrelease-taskchart-mysql-pod 5000:5000
+kubectl port-forward myrelease-taskchart-scheduler 5000:5000
 
 ```
 
