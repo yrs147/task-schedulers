@@ -1,0 +1,13 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: update-task-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: update-task
+        image: yrs9480/taskapp:latest
+        command: ["python", "./main.py", "update", "--id=1", "--name=UpdatedTask"]
+      restartPolicy: Never  
+  backoffLimit: 4
