@@ -66,7 +66,7 @@ helm install myrelease ./project-setup-chart
 
 # Usage
 
-**Timezone inside the container would be in ** `UTC` **so schedule your tasks accordingly** 
+**Timezone inside the container would be in**  `UTC` **so schedule your tasks accordingly** 
 
 
 ## API
