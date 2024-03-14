@@ -130,7 +130,7 @@ kubectl port-forward myrelease-taskchart-scheduler 5000:5000
 
 **Path** - `http://localhost:5000/tasks/{task_id}`
 
-**Request Body(Recurring Tasks):**
+**Request Body(Non Recurring Tasks):**
 
 Can update both or either one
 
@@ -141,7 +141,7 @@ Can update both or either one
 }
 ```
 
-**Request Body(Non Recurring Tasks):**
+**Request Body(Recurring Tasks):**
 
 Can update both or either one
 
@@ -186,7 +186,7 @@ kubectl exec myrelease-taskchart-scheduler -c scheduler -- python ./main.py get 
 
 ### - Update a  task(Recurring):
 
-`id` is req to get the task and then you can update either of `name` or `cron_schedule`
+`id` is req to get the task and then you can update either of `name` or `cron_schedule` or both
 
 ```
 kubectl exec myrelease-taskchart-scheduler -c scheduler -- python ./main.py update  --id=1087 --cron_schedule '*/2 * * * *'  
@@ -194,7 +194,7 @@ kubectl exec myrelease-taskchart-scheduler -c scheduler -- python ./main.py upda
 
 ### - Update a  task(Non Recurring):
 
-`id` is req to get the task and then you can update either of `name` or `execution_time`
+`id` is req to get the task and then you can update either of `name` or `execution_time` or both
 
 
 ```
