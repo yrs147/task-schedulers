@@ -21,6 +21,10 @@ The Task Scheduler Project is a powerful task scheduling system designed to perf
 
 - **Kubernetes Deployment:** - Easily deploy the scheduler and MySQL database using Helm Charts, simplifying the deployment process.
 
+## Screenshot
+
+<img width="1011" alt="image" src="https://github.com/yrs147/task-schedulers/assets/98258627/c24a604e-095b-44a3-8e34-08ca31e841b9">
+
   
 
 ## Installation
@@ -61,6 +65,9 @@ helm install myrelease ./project-setup-chart
   
 
 # Usage
+
+**Timezone inside the container would be in ** `UTC` **so schedule your tasks accordingly** 
+
 
 ## API
 
@@ -154,26 +161,26 @@ Can update both or either one
 ### - Create a new task(Recurring):
 
 ```
-kubectl exec myrelease-taskchart-scheduler -- python ./main.py create --name TaskName --cron_schedule '*/2 * * * *'  
+kubectl exec myrelease-taskchart-scheduler -c scheduler -- python ./main.py create --name TaskName --cron_schedule '*/2 * * * *'  
 ```
 
 ### - Create a new task(Non Recurring):
 
 ```
-kubectl exec myrelease-taskchart-scheduler -- python ./main.py create --name TaskName  --execution_time '2024-03-11 00:06:00' 
+kubectl exec myrelease-taskchart-scheduler -c scheduler -- python ./main.py create --name TaskName  --execution_time '2024-03-11 00:06:00' 
 ```
 
 
 ### - Get Tasks:
 
 ```
-kubectl exec myrelease-taskchart-scheduler -- python ./main.py view
+kubectl exec myrelease-taskchart-scheduler -c scheduler -- python ./main.py view
 ```
 
 ### - Get a Specific Tasks by Id:
 
 ```
-kubectl exec myrelease-taskchart-scheduler -- python ./main.py get --id="ID"
+kubectl exec myrelease-taskchart-scheduler -c scheduler -- python ./main.py get --id="ID"
 ```
 
 
@@ -182,7 +189,7 @@ kubectl exec myrelease-taskchart-scheduler -- python ./main.py get --id="ID"
 `id` is req to get the task and then you can update either of `name` or `cron_schedule`
 
 ```
-kubectl exec myrelease-taskchart-scheduler -- python ./main.py update  --id=1087 --cron_schedule '*/2 * * * *'  
+kubectl exec myrelease-taskchart-scheduler -c scheduler -- python ./main.py update  --id=1087 --cron_schedule '*/2 * * * *'  
 ```
 
 ### - Update a  task(Non Recurring):
@@ -191,13 +198,13 @@ kubectl exec myrelease-taskchart-scheduler -- python ./main.py update  --id=1087
 
 
 ```
-kubectl exec myrelease-taskchart-scheduler -- python ./main.py update --id=8765 --name TaskName  --execution_time '2024-03-11 00:06:00' 
+kubectl exec myrelease-taskchart-scheduler -c scheduler -- python ./main.py update --id=8765 --name TaskName  --execution_time '2024-03-11 00:06:00' 
 ```
 
 ### - Delete a Task:
 
 ```
-kubectl exec myrelease-taskchart-scheduler -- python ./main.py delete --id=5423
+kubectl exec myrelease-taskchart-scheduler -c scheduler -- python ./main.py delete --id=5423
 ```
 
 ## Kubernetes Jobs
