@@ -209,7 +209,100 @@ kubectl exec myrelease-taskchart-scheduler -c scheduler -- python ./main.py dele
 
 ## Kubernetes Jobs
 
-**You can also use Kubernetes jobs to create tasks using Kubernetes job helm charts***
+**You can also use Kubernetes jobs to create tasks using helm charts or using the manifests in the***`crud_jobs` **folder**
+
+### Sample Read Job
+```
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: read-task-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: read-task
+        image: yrs9480/taskapp:latest
+        command: ["python", "./main.py", "view"]
+      restartPolicy: Never  
+  backoffLimit: 4
+
+```
+
+```
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: read-specific-task-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: read-specific-task
+        image: yrs9480/taskapp:latest
+        command: ["python", "./main.py", "get", "--id=7465"]
+      restartPolicy: Never  
+  backoffLimit: 4
+
+```
+
+
+### Sample Create Job
+
+```
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-task-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: create-task
+        image: yrs9480/taskapp:latest
+        command: ["python", "./main.py", "create", "--name=NewTask", "--execution_time=2024-03-14 18:55:30"]
+      restartPolicy: Never
+  backoffLimit: 4
+
+```
+
+### Sample Update Job
+
+```
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: update-task-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: update-task
+        image: yrs9480/taskapp:latest
+        command: ["python", "./main.py", "update", "--id=1", "--name=UpdatedTask"]
+      restartPolicy: Never  
+  backoffLimit: 4
+
+```
+
+### Sample Delete Job
+
+```
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: delete-task-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: delete-task
+        image:  yrs9480/taskapp:latest
+        command: ["python", "./main.py", "delete", "--id=7647"]
+      restartPolicy: Never  
+  backoffLimit: 4
+
+```
 
 
 ### - Create Non Recurring Task:
