@@ -21,9 +21,12 @@ The Task Scheduler Project is a powerful task scheduling system designed to perf
 
 - **Kubernetes Deployment:** - Easily deploy the scheduler and MySQL database using Helm Charts, simplifying the deployment process.
 
-## Screenshot
+## Screenshots
 
 <img width="1011" alt="image" src="https://github.com/yrs147/task-schedulers/assets/98258627/c24a604e-095b-44a3-8e34-08ca31e841b9">
+
+<img width="1348" alt="image" src="https://github.com/yrs147/task-schedulers/assets/98258627/9f860e6d-26f0-4198-8989-decc2f851488">
+
 
   
 
