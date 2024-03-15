@@ -10,4 +10,4 @@ spec:
     app: mysql
   {{- include "taskchart.selectorLabels" . | nindent 4 }}
   ports:
-	{{- .Values.mysqlService.ports | toYaml | nindent 2 }}
+  {{- .Values.mysqlService.ports | toYaml | nindent 2 }}
